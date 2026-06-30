@@ -5,6 +5,10 @@ description: Chuẩn SEO kỹ thuật cho web Next.js để Google tìm thấy s
 
 # SEO kỹ thuật cho Next.js
 
+> Skill này thiên về Next.js (Metadata API). Phần nền HTML thuần + thư viện công thức JSON-LD
+> theo loại hình (Product, NewsArticle, Restaurant, JobPosting, Recipe, Event, FAQPage…) nằm ở
+> skill `semantic-html-seo` (khoá HTML). Hai skill bổ trợ nhau, không lặp lại.
+
 Giúp Google hiểu và hiển thị sản phẩm đúng. Tập trung vào phần kỹ thuật mà code kiểm soát
 được; nội dung tốt vẫn là gốc.
 
