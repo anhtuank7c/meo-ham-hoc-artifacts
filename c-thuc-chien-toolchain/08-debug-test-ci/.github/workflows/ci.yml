@@ -1,0 +1,26 @@
+# CI mẫu cho MỘT dự án C (đặt file này ở .github/workflows/ của REPO GỐC dự án).
+# Nó chạy đúng chuỗi công cụ của khoá Toolchain: định dạng → build (có sanitizer)
+# → test. Thêm clang-tidy nếu muốn.
+name: CI
+on: [push, pull_request]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Cài công cụ
+        run: sudo apt-get update && sudo apt-get install -y cmake clang-format clang-tidy
+
+      - name: Kiểm tra định dạng
+        run: clang-format --dry-run --Werror $(git ls-files '*.c' '*.h')
+
+      - name: Cấu hình (kèm ASan + UBSan)
+        run: cmake -S . -B build -DCMAKE_C_FLAGS="-fsanitize=address,undefined -g"
+
+      - name: Biên dịch
+        run: cmake --build build
+
+      - name: Chạy test (dưới sanitizer)
+        run: ctest --test-dir build --output-on-failure

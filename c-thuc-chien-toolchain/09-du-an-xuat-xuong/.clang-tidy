@@ -1,0 +1,15 @@
+# Cấu hình clang-tidy cho dự án "xuất xưởng" — bộ kiểm thực tế:
+#  - clang-analyzer-*  : phát hiện bug bằng phân tích luồng (null, leak, dùng-sau-free…)
+#  - bugprone-*        : các mẫu dễ sinh lỗi
+#  - readability-braces-around-statements : BẮT BUỘC có { } — chặn lỗi kiểu "goto fail" của Apple
+# Tắt có chủ đích (thường tắt ở dự án thật):
+#  - …insecureAPI.DeprecatedOrUnsafeBufferHandling : đòi hàm _s (Annex K) không khả chuyển
+#  - readability-magic-numbers : quá ồn cho kích thước buffer
+Checks: >
+  -*,
+  clang-analyzer-*,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  bugprone-*,
+  readability-braces-around-statements
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*'

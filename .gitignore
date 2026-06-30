@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Sản phẩm biên dịch lọt vào khi học viên build thử (đừng commit)
+*.o
+*.a
+*.so
+*.i
+*.s
+*.out
+build/
+dist/
+
+# LƯU Ý: KHÔNG ignore *.zip - các file <lab>.zip được commit có chủ đích
+# để học viên tải một chạm (xem build-zips.sh).

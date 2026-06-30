@@ -1,0 +1,28 @@
+# CI cho dự án "xuất xưởng": chạy TẤT CẢ cổng chất lượng mỗi lần push/PR.
+# Định dạng → phân tích tĩnh → build (kèm ASan/UBSan) → test. Đỏ một cổng là chặn merge.
+name: CI
+on: [push, pull_request]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Cài công cụ
+        run: sudo apt-get update && sudo apt-get install -y cmake clang-format clang-tidy
+
+      - name: Cổng 1 — Định dạng (clang-format)
+        run: clang-format --dry-run --Werror $(git ls-files '*.c' '*.h')
+
+      - name: Cấu hình (bật cảnh báo = lỗi + ASan/UBSan)
+        run: cmake -S . -B build -DCMAKE_C_FLAGS="-Werror -fsanitize=address,undefined -g"
+
+      - name: Cổng 2 — Biên dịch (-Wall -Wextra -Werror)
+        run: cmake --build build
+
+      - name: Cổng 3 — Phân tích tĩnh (clang-tidy)
+        run: clang-tidy -p build $(git ls-files 'src/*.c')
+
+      - name: Cổng 4+5 — Test dưới sanitizer (ctest)
+        run: ctest --test-dir build --output-on-failure
